@@ -1,4 +1,4 @@
-Telegram Clone
+Telegram Clone:
 Telegram Clone is a React application that displays chat messages fetched from an API. The application features a sidebar with a search bar and a list of users with their messages. Clicking on a user in the sidebar displays their messages in the main content area.
 
 Table of Contents
@@ -18,7 +18,7 @@ Clone the repository:
 
 sh
 Copy code
-git clone https://github.com/yourusername/Telegram Clone.git
+git clone https://github.com/VankteshPandey/telegramClone.git Clone.git
 cd Telegram Clone
 Install dependencies:
 
@@ -34,7 +34,7 @@ Copy code
 npm start
 # or
 yarn start
-Open your browser and navigate to http://localhost:3000.
+Open your browser and navigate to https://telegram-clone-gold.vercel.app/messgaeId/#14024.
 
 Usage
 Running the Project
