@@ -42,7 +42,7 @@ function SendMessage() {
             value={message} // Bind the input value to the message state
             onChange={(e) => setMessage(e.target.value)} // Update the message state on input change
             placeholder='Message'
-            className='min-w-[550px] max-w-[600px] h-14 bg-[#212121] rounded-xl p-2'
+            className='lg:min-w-[550px] lg:max-w-[600px] h-14 bg-[#212121] rounded-xl p-2'
           />
           <button type="submit" className='bg-[#212121] relative left-0 top-2 rounded-full p-2 right-[11%]'>
             <img src='/send.svg' className='h-9' alt='send' />

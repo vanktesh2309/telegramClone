@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation,Link } from 'react-router-dom';
 
 function Messages({ messageCollection }) {
   const location = useLocation();
@@ -73,6 +73,7 @@ function Messages({ messageCollection }) {
     <div className='flex flex-col'>
       {/* User profile section */}
       <div className='flex items-center h-14 bg-[rgb(33,33,33)]'>
+      <Link to={"/"}><img src="/back.svg" alt="back" className={`h-8 ml-8 mr-2 md:sr-only`} /></Link>
         <img src="/logo512.png" className='h-11 ml-6 rounded-full border' alt="profile" />
         <div>
           <h2 className='text-lg font-semibold ml-2'>{user.sender.name || "Temp"}</h2>
@@ -80,14 +81,14 @@ function Messages({ messageCollection }) {
         </div>
       </div>
       {/* Received message display */}
-      <div className="messageRecive content-center pl-[136px] mt-2 flex items-center justify-start">
+      <div className="messageRecive content-center lg:pl-[136px] mt-2 flex items-center justify-start">
         <div className='messageBoxRecive p-2'>
           <p className=''>{user.message}</p>
         </div>
       </div>
       {/* Sent messages display */}
       {messages.map((sendMessage, index) => (
-        <div key={sendMessage.id} className="messageSend content-center pr-[136px] flex items-center justify-end">
+        <div key={sendMessage.id} className="messageSend content-center lg:pr-[136px] flex items-center justify-end">
           <div className='messageBoxSend flex flex-col mt-2 p-2'>
             <p className=''>{sendMessage.message}</p>
           </div>

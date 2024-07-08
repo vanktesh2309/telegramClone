@@ -2,13 +2,21 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Outlet, Link } from 'react-router-dom';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 function App() {
   // State to hold the fetched message data
+  const [messageRoute, setMessageRoute] = useState(false)
   const [messageData, setMessageData] = useState([]);
 
+  const location = useLocation()
   // useEffect to fetch message data on component mount
   useEffect(() => {
+    if(location.pathname === '/messgaeId/'){
+      setMessageRoute(true)
+    }else{
+      setMessageRoute(false)
+    }
     // IIFE to fetch data
     (async function getData() {
       try {
@@ -18,12 +26,12 @@ function App() {
         console.error("Error fetching messages:", error);
       }
     })();
-  }, []);
+  }, [location.pathname]);
 
   return (
     <main className="layout">
       {/* Sidebar section */}
-      <section className='layout-side'>
+      <section className={`layout-side ${messageRoute? "display":''}`}>
         {/* Search bar */}
         <div className='flex'>
           <img src="/search.svg" className='mt-5 ml-6 h-6' alt="menu" />
@@ -55,7 +63,7 @@ function App() {
       </section>
 
       {/* Main content section */}
-      <section className='layout-main'>
+      <section className={`layout-main ${messageRoute? "":'display'}`}>
         <Outlet />
       </section>
     </main>
