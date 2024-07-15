@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'; // Import uuid for generating unique IDs
 import Messages from './Messages';
 
 function SendMessage() {
+  
   // State to hold the array of messages
   const [messageArray, setMessageArray] = useState([
     {
@@ -34,7 +35,7 @@ function SendMessage() {
   return (
     <>
       {/* Render the Messages component and pass the message array as a prop */}
-      <Messages messageCollection={messageArray} />
+      <Messages messageCollection={messageArray}  />
       <form onSubmit={handleSubmit} className='flex w-full items-end justify-center p-3'>
         <div className='absolute bottom-5 space-x-3'>
           <input

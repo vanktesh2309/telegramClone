@@ -1,91 +1,91 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useLocation,Link } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
 
-function Messages({ messageCollection }) {
-  const location = useLocation();
+import { Link, useLocation } from 'react-router-dom';
+import useGetData from './getDataHook';
 
+function Messages({ messageCollection}) {
+  
+  const location = useLocation()
+
+  const defaultUser = useMemo(()=>{
+    return  {
+      "2309": {
+        messages: ["Hi there! My name is Vanktesh Pandey\nWelcome to my Telegram clone.\nKindly give me your feedback about my work."],
+       sender:{id: 2309,
+       sender_id: 2309,
+       name: "Vanktesh Pandey",
+       role_id: 9,
+       unanswered: 0,
+       vote: null,
+       chat_id: 3888,
+       action_id: null,
+       is_corrected: 0,
+       created_at: "2024-07-04T09:41:48.000000Z",
+       updated_at: "2024-07-04T09:41:48.000000Z",
+       sender: {
+         id: 1,
+         name: "Vanktesh Pandey",
+         email: "venktesh.pandey.abc@gmail.com",
+         phone: null,
+         email_verified_at: null,
+         password_updated: 0,
+         created_at: null,
+         updated_at: "2023-04-26T12:43:24.000000Z",
+         device: null,
+         browser: null,
+         os: null,
+         city: null,
+         country: null
+       }}
+     }
+     }
+  },[]);
+const url = 'https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888'
   // State to store the collection of messages passed from the parent component
   const [messages, setMessages] = useState(messageCollection);
+  const [user, setUser] = useState(defaultUser[2309]);
 
-  // Default user message data in case no message is found
-  const defaultUser = {
-    id: 14021,
-    sender_id: 2309,
-    role_id: 9,
-    message: "Hi there! My name is Vanktesh Pandey\nWelcome to my Telegram clone.\nKindly give me your feedback about my work.",
-    unanswered: 0,
-    vote: null,
-    chat_id: 3888,
-    action_id: null,
-    is_corrected: 0,
-    created_at: "2024-07-04T09:41:48.000000Z",
-    updated_at: "2024-07-04T09:41:48.000000Z",
-    sender: {
-      id: 1,
-      name: "Vanktesh Pandey",
-      email: "venktesh.pandey.abc@gmail.com",
-      phone: null,
-      email_verified_at: null,
-      password_updated: 0,
-      created_at: null,
-      updated_at: "2023-04-26T12:43:24.000000Z",
-      device: null,
-      browser: null,
-      os: null,
-      city: null,
-      country: null
-    }
-  };
+  const groupedMessages = useGetData(url)
 
-  // State to store the fetched message data from the API
-  const [messageData, setMessageData] = useState([defaultUser]);
+  
+  
+  useEffect(()=>{
+    console.log("REndring")
 
-  // State to store the current user data
-  const [user, setUser] = useState(defaultUser);
-
-  // Fetch message data from the API when the component mounts or location hash changes
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        // Fetch data from the API
-        const response = await axios.get('https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888');
-        setMessageData(response.data.data); // Update message data state
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    };
-
-    getData();
-    console.log("rendring")
-
-    // Extract the fragment from the URL and use it to find the corresponding user
+    const userObject = {...defaultUser,...groupedMessages}
+    console.log("userObject",userObject)
     const fragment = window.location.hash.replace(/^#/, '');
-    const selectedUser = messageData.find(user => user.id === parseInt(fragment, 10));
-    setUser(selectedUser || defaultUser); // Update user state
-  }, [location.hash,]);
-
+    console.log("userObject",fragment)
+    const selectedUser = Object.values(userObject).find(user => user.sender.id === parseInt(fragment, 10));
+    setUser(selectedUser ); // Update user state
+  },[groupedMessages,defaultUser,location])
+  
+  console.log("user",user)
+  
   // Update the messages state whenever the messageCollection prop changes
   useEffect(() => {
     setMessages(messageCollection);
   }, [messageCollection]);
-
+  
   return (
-    <div className='flex flex-col'>
+    <div className='flex overflow-scroll h-5/6 scrollable-section flex-col'>
       {/* User profile section */}
       <div className='flex items-center h-14 bg-[rgb(33,33,33)]'>
       <Link to={"/"}><img src="/back.svg" alt="back" className={`h-8 ml-8 mr-2 md:sr-only`} /></Link>
         <img src="/logo512.png" className='h-11 ml-6 rounded-full border' alt="profile" />
         <div>
-          <h2 className='text-lg font-semibold ml-2'>{user.sender.name || "Temp"}</h2>
+          {/* <h2 className='text-lg font-semibold ml-2'>{!user.sender.name?"Unknown":user.sender.name}</h2> */}
           <h2 className='mb-1 text-sm text-[rgb(174,174,174)] font-semibold ml-2'>last seen a long time ago</h2>
         </div>
       </div>
       {/* Received message display */}
-      <div className="messageRecive content-center lg:pl-[136px] mt-2 flex items-center justify-start">
+      <div className="messageRecive content-center lg:pl-[0px] mt-2 flex flex-col space-y-2 items-center justify-start">
+        
+          {user?.messages.map(messages=>(
         <div className='messageBoxRecive p-2'>
-          <p className=''>{user.message}</p>
+            <p className=''>{messages}</p>
         </div>
+          ))}
       </div>
       {/* Sent messages display */}
       {messages.map((sendMessage, index) => (

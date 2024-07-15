@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Outlet, Link } from 'react-router-dom';
-import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import useGetData from './getDataHook';
 
 function App() {
   // State to hold the fetched message data
   const [messageRoute, setMessageRoute] = useState(false)
-  const [messageData, setMessageData] = useState([]);
+  
+const url = 'https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888'
+  // reducer function
+  const groupedMessages = useGetData(url)
+  
+
+  
+
+
 
   const location = useLocation()
   // useEffect to fetch message data on component mount
@@ -18,15 +26,9 @@ function App() {
       setMessageRoute(false)
     }
     // IIFE to fetch data
-    (async function getData() {
-      try {
-        const response = await axios('https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888');
-        setMessageData(response.data.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    })();
+    
   }, [location.pathname]);
+  
 
   return (
     <main className="layout ">
@@ -51,11 +53,11 @@ function App() {
         </Link>
 
         {/* Dynamic links generated from message data */}
-        {messageData.map(message => (
-          <Link to={`messgaeId/#${message.id}`} key={message.sender_id} className='flex ml-2 p-2 mt-1 m-1 message'>
+        {Object.values(groupedMessages).map(message => (
+          <Link to={`messgaeId/#${message.sender.id}`} key={message.sender.id} className='flex ml-2 p-2 mt-1 m-1 message'>
             <img src="/logo512.png" alt="profile" className='h-14 rounded-full' />
             <div>
-              <p className='ml-2'>{message.sender.name}</p>
+              <p className='ml-2'>{message.sender.name === null ? "Unknown":message.sender.name}</p>
               <p className='ml-2 mt-1'>New message</p>
             </div>
           </Link>
@@ -64,7 +66,7 @@ function App() {
 
       {/* Main content section */}
       <section className={`overflow-scroll scrollable-section layout-main ${messageRoute? "":'display'}`}>
-        <Outlet />
+        <Outlet groupedMessages={groupedMessages} />
       </section>
     </main>
   );
