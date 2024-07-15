@@ -11,7 +11,7 @@ function Messages({ messageCollection}) {
     return  {
       "2309": {
         messages: ["Hi there! My name is Vanktesh Pandey\nWelcome to my Telegram clone.\nKindly give me your feedback about my work."],
-       sender:{id: 2309,
+        sender:{id: 2309,
        sender_id: 2309,
        name: "Vanktesh Pandey",
        role_id: 9,
@@ -44,29 +44,31 @@ const url = 'https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888'
   // State to store the collection of messages passed from the parent component
   const [messages, setMessages] = useState(messageCollection);
   const [user, setUser] = useState(defaultUser[2309]);
+  const [userName, setUserName] = useState("Unknown");
 
   const groupedMessages = useGetData(url)
 
   
   
+  
   useEffect(()=>{
-    console.log("REndring")
+    
 
     const userObject = {...defaultUser,...groupedMessages}
     console.log("userObject",userObject)
     const fragment = window.location.hash.replace(/^#/, '');
     console.log("userObject",fragment)
-    const selectedUser = Object.values(userObject).find(user => user.sender.id === parseInt(fragment, 10));
+    const selectedUser = Object.values(userObject).find(user => user?.sender.id === parseInt(fragment, 10));
     setUser(selectedUser ); // Update user state
+    setUserName(current => selectedUser?.sender?.name ? selectedUser.sender.name : 'Unknown');
   },[groupedMessages,defaultUser,location])
   
-  console.log("user",user)
   
   // Update the messages state whenever the messageCollection prop changes
   useEffect(() => {
     setMessages(messageCollection);
   }, [messageCollection]);
-  
+  console.log("user",user)
   return (
     <div className='flex overflow-scroll h-5/6 scrollable-section flex-col'>
       {/* User profile section */}
@@ -74,7 +76,7 @@ const url = 'https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888'
       <Link to={"/"}><img src="/back.svg" alt="back" className={`h-8 ml-8 mr-2 md:sr-only`} /></Link>
         <img src="/logo512.png" className='h-11 ml-6 rounded-full border' alt="profile" />
         <div>
-          {/* <h2 className='text-lg font-semibold ml-2'>{!user.sender.name?"Unknown":user.sender.name}</h2> */}
+          <h2 className='text-lg font-semibold ml-2'>{userName}</h2>
           <h2 className='mb-1 text-sm text-[rgb(174,174,174)] font-semibold ml-2'>last seen a long time ago</h2>
         </div>
       </div>
