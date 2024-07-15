@@ -88,3 +88,7 @@
     border-width: 0;
   }
 }
+
+.scrollable-section::-webkit-scrollbar {
+  display: none;
+}

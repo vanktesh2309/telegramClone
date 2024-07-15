@@ -57,12 +57,13 @@ function Messages({ messageCollection }) {
     };
 
     getData();
+    console.log("rendring")
 
     // Extract the fragment from the URL and use it to find the corresponding user
     const fragment = window.location.hash.replace(/^#/, '');
     const selectedUser = messageData.find(user => user.id === parseInt(fragment, 10));
     setUser(selectedUser || defaultUser); // Update user state
-  }, [location.hash]);
+  }, [location.hash,]);
 
   // Update the messages state whenever the messageCollection prop changes
   useEffect(() => {

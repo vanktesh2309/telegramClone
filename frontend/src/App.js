@@ -29,9 +29,9 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <main className="layout">
+    <main className="layout ">
       {/* Sidebar section */}
-      <section className={`layout-side ${messageRoute? "display":''}`}>
+      <section className={`overflow-scroll scrollable-section layout-side ${messageRoute? "display":''}`}>
         {/* Search bar */}
         <div className='flex'>
           <img src="/search.svg" className='mt-5 ml-6 h-6' alt="menu" />
@@ -63,7 +63,7 @@ function App() {
       </section>
 
       {/* Main content section */}
-      <section className={`layout-main ${messageRoute? "":'display'}`}>
+      <section className={`overflow-scroll scrollable-section layout-main ${messageRoute? "":'display'}`}>
         <Outlet />
       </section>
     </main>
