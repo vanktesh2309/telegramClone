@@ -81,7 +81,7 @@ const url = 'https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888'
         </div>
       </div>
       {/* Received message display */}
-      <div className="messageRecive content-center lg:pl-[0px] mt-2 flex flex-col space-y-2 items-center justify-start">
+      <div className="messageRecive content-center lg:pl-[0px] mt-2 flex flex-col space-y-2 ml-8 justify-start">
         
           {user?.messages.map(messages=>(
         <div className='messageBoxRecive p-2'>
@@ -91,7 +91,7 @@ const url = 'https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888'
       </div>
       {/* Sent messages display */}
       {messages.map((sendMessage, index) => (
-        <div key={sendMessage.id} className="messageSend content-center lg:pr-[136px] flex items-center justify-end">
+        <div key={sendMessage.id} className="messageSend content-center mr-8  flex items-center justify-end">
           <div className='messageBoxSend flex flex-col mt-2 p-2'>
             <p className=''>{sendMessage.message}</p>
           </div>
